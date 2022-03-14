@@ -1,0 +1,21 @@
+version: '2'
+
+networks:
+  test:
+
+services:
+  ca.hashing.test.com:
+    image: hyperledger/fabric-ca:1.4.3
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.hashing.test.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.hashing.test.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/2e099150434ecbb56a3d30f381dcff39b8e130f50954830fa72fe671404fd463_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/hashing.test.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.hashing.test.com
+    networks:
+      - test

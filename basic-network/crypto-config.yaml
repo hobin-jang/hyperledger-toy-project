@@ -1,0 +1,25 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: test.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Hashing
+    Domain: hashing.test.com
+    Template: # the number of peers 
+      Count: 2
+    Users: # the number of users
+      Count: 1
+  - Name: Search
+    Domain: search.test.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+  - Name: Request
+    Domain: request.test.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1

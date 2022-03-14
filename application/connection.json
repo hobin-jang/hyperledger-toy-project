@@ -1,0 +1,83 @@
+{
+    "name": "basic-network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Hashing",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "channel1": {
+            "orderers": [
+                "orderer.test.com"
+            ],
+            "peers": {
+                "peer0.hashing.test.com": {}
+            }
+        }
+    },
+    "organizations": {
+        "Hashing": {
+            "mspid": "HashingOrg",
+            "peers": [
+                "peer0.hashing.test.com"
+            ],
+            "certificateAuthorities": [
+                "ca.hashing.test.com"
+            ],
+            "adminPrivateKey": {
+                "path":"../../basic-network/crypto-config/peerOrganizations/hashing.test.com/users/Admin@hashing.test.com/msp/keystore/5f13bf10d7c4c1c774dcf674e02454fda7a401f0227fb2024d2a9cabfc3d2f7d_sk"
+            },
+            "signedCert":{
+                "path":"../../basic-network/crypto-config/peerOrganizations/hashing.test.com/users/Admin@hashing.test.com/msp/signcerts/Admin@hashing.test.com-cert.pem"
+            }
+        }
+    },
+    "orderers": {
+        "orderer.test.com": {
+            "url": "grpc://localhost:7050",
+            "grpcOptions":{
+                "ssl-target-name-override":"orderer.test.com",
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "../../basic-network/crypto-config/ordererOrganizations/test.com/orderers/orderer.test.com/msp/tlscacerts/tlsca.test.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.hashing.test.com": {
+            "url": "grpc://localhost:7051",
+            "tlsCACerts": {
+                "path": "../../basic-network/crypto-config/peerOrganizations/hashing.test.com/peers/peer0.hashing.test.com/msp/tlscacerts/tlsca.hashing.test.com-cert.pem"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.hashing.test.com",
+                "hostnameOverride": "peer1.hashing.test.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.hashing.test.com": {
+            "url": "http://localhost:7054",
+            "caName": "ca.hashing.test.com",
+            "tlsCACerts": {
+                "path": "../../basic-network/crypto-config/peerOrganizations/hashing.test.com/ca/ca.hashing.test.com-cert.pem"
+            },
+            "registrar":{
+                "enrollId": "admin",
+                "enrollSecret": "adminpw",
+                "caName": "cahashing"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,0 +1,70 @@
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererOrg
+        MSPDir: crypto-config/ordererOrganizations/test.com/msp
+
+    - &HashingOrg
+        Name: HashingOrg
+        ID: HashingOrg
+        MSPDir: crypto-config/peerOrganizations/hashing.test.com/msp
+        AnchorPeers:
+            - Host: peer0.hashing.test.com
+              Port: 7051
+
+    - &SearchOrg
+        Name: SearchOrg
+        ID: SearchOrg
+        MSPDir: crypto-config/peerOrganizations/search.test.com/msp
+        AnchorPeers:
+            - Host: peer0.search.test.com
+              Port: 7051
+    
+    - &RequestOrg
+        Name: RequestOrg
+        ID: RequestOrg
+        MSPDir: crypto-config/peerOrganizations/request.test.com/msp
+        AnchorPeers:
+            - Host: peer0.request.test.com
+              Port: 7051
+
+Orderer: &OrdererDefaults
+
+    OrdererType: solo
+    Addresses:
+        - orderer.test.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+Application: &ApplicationDefaults
+    Organizations:
+    
+Profiles:
+
+    OrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *HashingOrg
+                    - *SearchOrg
+                    - *RequestOrg
+    Channel1:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *HashingOrg
+                - *SearchOrg
+                - *RequestOrg
